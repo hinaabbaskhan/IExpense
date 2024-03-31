@@ -19,7 +19,8 @@ class User: ObservableObject {
 struct ContentView: View {
     @StateObject private var user = User()
     @State private var showingSheet = false
-
+    @State private var showingListOfRowsSheet = false
+    
         var body: some View {
             VStack {
                 Text("Your name is \(user.firstName) \(user.lastName).")
@@ -28,11 +29,50 @@ struct ContentView: View {
                 Button("Second View"){
                     showingSheet.toggle()
                 }
+                Button("Deleting items using onDelete() View"){
+                    showingListOfRowsSheet.toggle()
+                }
                 .sheet(isPresented: $showingSheet) {
                     Secondview(name:"Hina")
                 }
+                .sheet(isPresented: $showingListOfRowsSheet) {
+                    ListOfRowsView()
+                }
             }
         }
+}
+
+struct ListOfRowsView: View {
+    @State private var numbers = [Int]()
+    @State private var currentNumber = 1
+    @Environment(\.dismiss) var dismiss
+
+
+    var body: some View {
+        NavigationStack{
+            VStack {
+                List {
+                    ForEach(numbers, id: \.self) {
+                        Text("Row \($0)")
+                    }.onDelete(perform: removeRows)
+                }
+                
+                Button("Add Number") {
+                    numbers.append(currentNumber)
+                    currentNumber += 1
+                }
+            }.toolbar {
+                EditButton()
+                Button("X"){
+                    dismiss()
+                }
+            }
+        }
+    }
+    
+    func removeRows(at offsets: IndexSet) {
+        numbers.remove(atOffsets: offsets)
+    }
 }
 
 struct Secondview: View{
@@ -41,6 +81,7 @@ struct Secondview: View{
     var body: some View{
         VStack{
             Text("Hello \(name)")
+            
             Button("Dismiss the sheet"){
                 dismiss()
             }
