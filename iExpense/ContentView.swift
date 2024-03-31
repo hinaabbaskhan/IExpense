@@ -15,7 +15,7 @@ class User: ObservableObject {
 }
 
 struct ContentView: View {
-    @ObservedObject private var user = User()
+    @StateObject private var user = User()
 
         var body: some View {
             VStack {
