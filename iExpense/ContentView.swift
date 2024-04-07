@@ -42,6 +42,20 @@ struct ContentView: View {
         }
 }
 
+struct Secondview: View{
+    @Environment(\.dismiss) var dismiss
+    let name:String
+    var body: some View{
+        VStack{
+            Text("Hello \(name)")
+            
+            Button("Dismiss the sheet"){
+                dismiss()
+            }
+        }
+    }
+}
+
 struct ListOfRowsView: View {
     @State private var numbers = [Int]()
     @State private var currentNumber = 1
@@ -74,21 +88,6 @@ struct ListOfRowsView: View {
         numbers.remove(atOffsets: offsets)
     }
 }
-
-struct Secondview: View{
-    @Environment(\.dismiss) var dismiss
-    let name:String
-    var body: some View{
-        VStack{
-            Text("Hello \(name)")
-            
-            Button("Dismiss the sheet"){
-                dismiss()
-            }
-        }
-    }
-}
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
